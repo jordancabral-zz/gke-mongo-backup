@@ -1,0 +1,28 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: mongo-backup
+spec:
+  schedule: "0 3 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: google-cloud-key
+            secret:
+              secretName: gcs-key
+          containers:
+          - name: mongo-backup
+            image: <IMAGE_URI>
+            volumeMounts:
+            - name: google-cloud-key
+              mountPath: /var/secrets/google
+            env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
+            - name:  MONGO_URI
+              value: <MONGO_URI>
+            - name:  BUCKET_NAME
+              value: <BUCKET_NAME>
+          restartPolicy: OnFailure
