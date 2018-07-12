@@ -35,7 +35,7 @@ mongodump --uri $MONGO_URI -o $BACKUP_PATH --quiet
 
 # Compress
 echo "$(get_log_date) [Step 2/3] Creating tar file"
-tar -czf $BACKUP_PATH$BACKUP_FILENAME *
+tar -czf $BACKUP_PATH$BACKUP_FILENAME $BACKUP_PATH*
 
 # Copy to Google Cloud Storage
 echo "$(get_log_date) [Step 3/3] Uploading archive to Google Cloud Storage"
